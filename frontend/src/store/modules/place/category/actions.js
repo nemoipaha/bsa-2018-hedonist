@@ -25,5 +25,17 @@ export default {
                     reject(error);
                 });
         });
+    },
+
+    getTagsByCategory: (context, categoryId) => {
+        return new Promise(resolve => {
+            httpService.get('/places/categories/' + categoryId + '/tags')
+                .then(function (result) {
+                    resolve(result.data.data);
+                })
+                .catch(function (error) {
+                    reject(error);
+                });
+        });
     }
 };
