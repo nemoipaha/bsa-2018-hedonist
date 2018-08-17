@@ -318,23 +318,7 @@ export default {
             },
             categories: {},
             selectedTag: 'v',
-            category_tags: [
-                {
-                    name: 'bar'
-                },
-                {
-                    name: 'bar1'
-                },
-                {
-                    name: 'bar2'
-                },
-                {
-                    name: 'bar3'
-                },
-                {
-                    name: 'bar4'
-                }
-            ],
+            category_tags: {},
             weekdays: [],
             timeStart: new Date(),
             timeEnd: new Date(),
