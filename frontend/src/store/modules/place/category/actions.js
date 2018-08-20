@@ -29,7 +29,7 @@ export default {
 
     getTagsByCategory: (context, categoryId) => {
         return new Promise(resolve => {
-            httpService.get('/places/categories/' + categoryId + '/tags')
+            httpService.get(`/places/categories/${categoryId}/tags`)
                 .then(function (result) {
                     resolve(result.data.data);
                 })
