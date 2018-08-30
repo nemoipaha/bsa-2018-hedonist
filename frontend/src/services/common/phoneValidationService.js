@@ -8,7 +8,7 @@ const isE164 = (phone) => (phone.length >= 11 && phone.length <= 17 && E164.test
 
 const phoneSymbols = ['0','1','2','3','4','5','6','7','8','9','+','F5','Tab','Backspace','Delete'];
 
-const isPhone = (phone) => isDigits(phone) || isE164(phone) || phone == null;
+const isPhone = (phone) => isDigits(phone) || isE164(phone) || phone.length === 0;
 
 const isValidPhoneCharacter = (character) => phoneSymbols.includes('' + character);
 
