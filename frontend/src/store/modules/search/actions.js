@@ -4,7 +4,7 @@ import LocationService from '@/services/location/locationService';
 import mapSettingsService from '@/services/map/mapSettingsService';
 
 export default {
-    updateStateFromQuery: ({commit}, query) => {
+    updateStateFromQuery: ({commit, state}, query) => {
         if(query.location) {
             let location = query.location.split(',');
             commit('SET_SEARCH_CITY', {center: location});
@@ -21,6 +21,12 @@ export default {
                         latitude: coordinates.lat,
                         longitude: coordinates.lng
                     });
+                }).catch(()=>{
+                    let city = {center: [
+                        state.currentPosition.longitude,
+                        state.currentPosition.latitude
+                    ]};
+                    commit('SET_SEARCH_CITY', city);
                 });
         }
         if(query.name) commit('SET_SEARCH_PLACE', {name: query.name});

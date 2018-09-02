@@ -84,6 +84,12 @@ export default {
             })
             .catch(error => {
                 this.locationAvailable = false;
+                this.userLocation.center[0] = this.currentPosition.longitude;
+                this.userLocation.center[1] = this.currentPosition.latitude;
+                if ((this.$router.currentRoute.name === 'SearchPlacePage') && !this.searchPushed) {
+                    this.searchPushed = true;
+                    this.updateQueryFilters();
+                }
             });
     },
     computed: {
