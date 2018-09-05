@@ -13,9 +13,9 @@ export default {
                 });
         });
     },
-    fetchAllPlaces:(context) => {
+    fetchAllPlaces:(context , userId) => {
         return new Promise((resolve, reject) => {
-            httpService.get('/places/search')
+            httpService.get(`places/user/${userId}`)
                 .then(function (res) {
                     context.commit('SET_USERS_PLACES', res.data.data);
                     resolve(res);

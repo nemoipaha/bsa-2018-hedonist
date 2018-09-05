@@ -56,8 +56,11 @@ export default {
         })
     },
     created() {
-        this.$store.dispatch('users/fetchAllPlaces')
+        this.$store.dispatch('users/fetchAllPlaces' , this.$route.params.id)
             .then(()=>{
+                this.$emit('stopLoading', this.stopLoading);
+            })
+            .catch((error)=>{
                 this.$emit('stopLoading', this.stopLoading);
             });
     },

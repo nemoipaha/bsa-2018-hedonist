@@ -17,6 +17,11 @@ use Hedonist\Actions\Place\GetPlaceCollectionForAutoComplete\GetPlaceCollectionF
 use Hedonist\Actions\Place\GetPlaceItem\GetPlaceItemAction;
 use Hedonist\Actions\Place\GetPlaceItem\GetPlaceItemPresenter;
 use Hedonist\Actions\Place\GetPlaceItem\GetPlaceItemRequest;
+use Hedonist\Actions\Place\GetPlaceUserReviews\GetPlaceUserReviewsAction;
+use Hedonist\Actions\Place\GetPlaceUserReviews\GetPlaceUserReviewsRequest;
+use Hedonist\Actions\Place\GetPlaceUserReviews\GetPlaceUserReviewsCollectionPresenter;
+use Hedonist\Actions\Place\GetPlaceUserReviewsByFilters\GetPlaceUserReviewsByFiltersAction;
+use Hedonist\Actions\Place\GetPlaceUserReviewsByFilters\GetPlaceUserReviewsByFiltersRequest;
 use Hedonist\Actions\Place\GetUserRatingForPlace\GetUserRatingForPlaceAction;
 use Hedonist\Actions\Place\GetUserRatingForPlace\GetUserRatingForPlaceRequest;
 use Hedonist\Actions\Place\GetUserRatingForPlace\GetUserRatingForPlaceResponse;
@@ -52,6 +57,8 @@ class PlaceController extends ApiController
     private $getPlaceCollectionByFiltersAction;
     private $getPlaceCollectionForAutoCompleteAction;
     private $addPlaceTasteAction;
+    private $getPlacesUserCommentsAction;
+    private $getPlaceUserReviewsByFiltersAction;
 
     public function __construct(
         GetPlaceItemAction $getPlaceItemAction,
@@ -62,7 +69,9 @@ class PlaceController extends ApiController
         GetUserRatingForPlaceAction $getUserRatingForPlaceAction,
         GetPlaceCollectionByFiltersAction $getPlaceCollectionByFiltersAction,
         GetPlaceCollectionForAutoCompleteAction $getPlaceCollectionForAutoCompleteAction,
-        AddPlaceTasteAction $addPlaceTasteAction
+        AddPlaceTasteAction $addPlaceTasteAction,
+        GetPlaceUserReviewsAction $getPlacesUserCommentsAction,
+        GetPlaceUserReviewsByFiltersAction $getPlaceUserReviewsByFiltersAction
     ) {
         $this->getPlaceItemAction = $getPlaceItemAction;
         $this->getPlaceCollectionAction = $getPlaceCollectionAction;
@@ -73,6 +82,8 @@ class PlaceController extends ApiController
         $this->getPlaceCollectionByFiltersAction = $getPlaceCollectionByFiltersAction;
         $this->getPlaceCollectionForAutoCompleteAction = $getPlaceCollectionForAutoCompleteAction;
         $this->addPlaceTasteAction = $addPlaceTasteAction;
+        $this->getPlacesUserCommentsAction = $getPlacesUserCommentsAction;
+        $this->getPlaceUserReviewsByFiltersAction = $getPlaceUserReviewsByFiltersAction;
     }
 
     public function getPlace(int $id, GetPlaceItemPresenter $presenter): JsonResponse
@@ -190,6 +201,21 @@ class PlaceController extends ApiController
             );
 
             return $this->successResponse($presenter->present($placeResponse), 200);
+        } catch (DomainException $e) {
+            return $this->errorResponse($e->getMessage());
+        }
+    }
+
+    public function getUserPlacesCollection(int $user_id, GetPlaceUserReviewsCollectionPresenter $presenter): JsonResponse
+    {
+        try {
+            $placeUserReviewsResponse = $this->getPlaceUserReviewsByFiltersAction->execute(
+                new GetPlaceUserReviewsByFiltersRequest(
+                    $user_id
+                )
+            );
+
+            return $this->successResponse($presenter->present($placeUserReviewsResponse), 200);
         } catch (DomainException $e) {
             return $this->errorResponse($e->getMessage());
         }

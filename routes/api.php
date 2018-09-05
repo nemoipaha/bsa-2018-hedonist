@@ -52,6 +52,7 @@ Route::prefix('v1')->group(function () {
 
         Route::namespace('Api\\Place')->group(function () {
             Route::get('places', 'PlaceController@getCollection')->name('getPlaceCollection');
+            Route::get('places/user/{user_id}', 'PlaceController@getUserPlacesCollection')->name('getUserPlaceCollection');
             Route::get('places/{id}', 'PlaceController@getPlace')
                 ->where('id', '[0-9]+')
                 ->name('getPlace');
