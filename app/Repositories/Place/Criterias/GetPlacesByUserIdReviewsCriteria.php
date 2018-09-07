@@ -3,8 +3,6 @@ namespace Hedonist\Repositories\Place\Criterias;
 
 use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GetPlacesByUserIdReviewsCriteria implements CriteriaInterface
 {
@@ -17,9 +15,12 @@ class GetPlacesByUserIdReviewsCriteria implements CriteriaInterface
 
     public function apply($model, RepositoryInterface $repository)
     {
-        return $model->whereHas('reviews', function ($query) {
-            $query->where('user_id', $this->user_id);
-        });
+        return $model
+            ->whereHas('reviews', function ($query) {
+            $query
+                ->where('user_id', $this->user_id);
+        })
+            ->take(15);
     }
 
 }

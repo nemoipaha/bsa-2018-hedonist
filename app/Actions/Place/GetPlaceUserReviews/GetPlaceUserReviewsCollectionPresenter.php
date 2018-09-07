@@ -44,6 +44,7 @@ class GetPlaceUserReviewsCollectionPresenter
     public function present(GetPlaceUserReviewsResponse $placeResponse): array
     {
         return $placeResponse->getPlaceCollection()->map(function (Place $place) use ($placeResponse) {
+
             $result = $this->placePresenter->present($place);
             $result['review'] = $this->presentReview($place->reviews, $placeResponse->getUser());
             $result['photos'] = $this->photoPresenter->presentCollection($place->photos);
@@ -56,11 +57,6 @@ class GetPlaceUserReviewsCollectionPresenter
 
     private function presentReview(Collection $reviews, User $user): ?array
     {
-//        dd($reviews);
-//        $review = $reviews->first();
-//        if (is_null($review)) {
-//            return null;
-//        }
         foreach ($reviews as $review) {
             $presented = $this->reviewPresenter->present($review);
             $presented['like'] = $review->getLikedStatus($user->id)->value();

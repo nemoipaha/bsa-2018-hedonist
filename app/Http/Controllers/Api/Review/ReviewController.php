@@ -12,13 +12,17 @@ use Hedonist\Actions\Review\{
     GetUsersWhoLikedReviewAction,
     GetUsersWhoDislikedReviewAction
 };
-use Hedonist\Actions\Review\{GetReviewPhotoByPlaceAction,
+use Hedonist\Actions\Review\{
+    GetReviewPhotoByPlaceAction,
     GetReviewPhotoByPlaceRequest,
     GetReviewPhotoByReviewAction,
     GetReviewPhotoByReviewRequest,
     GetReviewRequest,
     CreateReviewRequest,
     DeleteReviewRequest,
+    GetReviewUserByPlacesCollectionAction,
+    GetReviewUserByPlacesCollectionRequest,
+    GetReviewUserByPlacesCollectionResponse,
     UpdateReviewDescriptionRequest,
     GetUsersWhoLikedReviewRequest,
     GetUsersWhoDislikedReviewRequest,
@@ -46,6 +50,8 @@ class ReviewController extends ApiController
     private $getUsersWhoDislikedReviewAction;
     private $getReviewPhotoByPlaceAction;
     private $reviewPresenter;
+    private $getReviewUserByPlacesCollectionAction;
+    private $getReviewUserByPlacesCollectionResponse;
 
     public function __construct(
         GetReviewAction $getReviewAction,
@@ -57,7 +63,9 @@ class ReviewController extends ApiController
         GetUsersWhoLikedReviewAction $getUsersWhoLikedReviewAction,
         GetUsersWhoDislikedReviewAction $getUsersWhoDislikedReviewAction,
         GetReviewPhotoByPlaceAction $getReviewPhotoByPlaceAction,
-        ReviewPresenter $reviewPresenter
+        ReviewPresenter $reviewPresenter,
+        GetReviewUserByPlacesCollectionAction $getReviewUserByPlacesCollectionAction,
+        GetReviewUserByPlacesCollectionResponse $getReviewUserByPlacesCollectionResponse
     ) {
         $this->getReviewAction = $getReviewAction;
         $this->updateReviewAction = $updateReviewAction;
@@ -69,6 +77,8 @@ class ReviewController extends ApiController
         $this->getUsersWhoDislikedReviewAction = $getUsersWhoDislikedReviewAction;
         $this->getReviewPhotoByPlaceAction = $getReviewPhotoByPlaceAction;
         $this->reviewPresenter = $reviewPresenter;
+        $this->getReviewUserByPlacesCollectionAction = $getReviewUserByPlacesCollectionAction;
+        $this->getReviewUserByPlacesCollectionResponse = $getReviewUserByPlacesCollectionResponse;
     }
 
     public function getReview(int $id)
@@ -103,6 +113,20 @@ class ReviewController extends ApiController
         } catch (DomainException $e) {
             return $this->errorResponse($e->getMessage());
         }
+    }
+
+    public function getReviewUserPlacesCollection(int $userId): JsonResponse
+    {
+        $getReviewUserByPlacesCollectionResponse = $this->getReviewUserByPlacesCollectionAction->execute(
+            new GetReviewUserByPlacesCollectionRequest(
+                $userId
+            )
+        );
+        return $this->successResponseWithMeta(
+            $this->reviewPresenter->presentCollection(
+                $getReviewUserByPlacesCollectionResponse->getReviewCollection()
+            )
+        );
     }
 
     public function createReview(SaveReviewRequest $request)
