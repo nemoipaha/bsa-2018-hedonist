@@ -62,6 +62,7 @@ export const normalizerService = {
         let allIds = [];
         reviews.forEach(function (review) {
             review.user_id = review.user.id;
+            review.photos = review.photos.map(item => item.id);
             allIds.push(review.id);
         });
         let transformedCurrentPlaceReviews = normalizerService.normalize(

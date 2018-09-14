@@ -90,12 +90,9 @@ export default {
         state.users.allIds.push(user.data.id);
     },
 
-    ADD_REVIEW_PHOTO: (state, {reviewId, img_url}) => {
-        let reviewPhotos = state.reviews.byId[reviewId].photos;
-        
-        if (!reviewPhotos.find(item => item.img_url === img_url)) {
-            reviewPhotos.push({img_url});
-        }
+    ADD_REVIEW_PHOTO: (state, ...items) => {
+        console.log(items);
+        state.reviewPhotos.push(...items);
     },
 
     SET_REVIEW_PHOTOS: (state, {reviewId, photos}) => {

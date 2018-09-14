@@ -34,7 +34,7 @@
                             <div class="review-photos">
                                 <div
                                     class="review-image"
-                                    v-for="(photo, index) in review.photos"
+                                    v-for="(photo, index) in photos"
                                     :key="index"
                                 >
                                     <img
@@ -118,6 +118,7 @@ export default {
 
     computed: {
         ...mapGetters('auth',['getAuthenticatedUser']),
+        ...mapGetters('review', {getPhotos: 'getReviewPhotos'}),
         userName() {
             return this.review.user.first_name + ' ' + this.review.user.last_name;
         },
@@ -142,6 +143,9 @@ export default {
             }
 
             return date.toLocaleString(locale, options);
+        },
+        photos(){
+            return this.getPhotos(this.review.id)
         }
     },
 

@@ -5,11 +5,12 @@ export default {
     },
     users: {
         byId: {},
-        allIds:[]
+        allIds: []
     },
     reviewsPerPage: 10,
     usersWhoLikedReview: [],
     usersWhoDislikedReview: [],
     isUsersModalLoading: false,
     placeReviewPhotos: [],
+    reviewPhotos: [],
 };

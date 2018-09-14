@@ -47,7 +47,7 @@ export default {
             httpService.post('reviews/photos', formData)
                 .then(function (res) {
                     context.commit('ADD_REVIEW_PHOTO', {
-                        reviewId: res.data.data.review_id,
+                        review_id: res.data.data.review_id,
                         img_url: res.data.data.img_url
                     });
                     context.commit('ADD_PLACE_REVIEW_PHOTO', res.data.data);
@@ -257,6 +257,10 @@ export default {
         return new Promise((resolve, reject) => {
             httpService.get(queryUrl)
                 .then((response) => {
+                    const photos = [];
+                    response.data.data.forEach(item =>{
+                        photos.push(...item.photos);
+                    });
                     const reviews = normalizerService.normalizeReviews(response.data.data);
                     const totalCount = _.get(response, 'data.meta.pagination.total', 0);
                     const perPage = _.get(response, 'data.meta.pagination.perPage', 10);
@@ -271,7 +275,7 @@ export default {
                         }
                     );
                     context.commit('SET_PLACE_REVIEWS_USERS', users);
-                    resolve({reviews: reviews.allIds, total: totalCount});
+                    context.commit('ADD_REVIEW_PHOTO', ...photos);
                     resolve({reviews: reviews.allIds, total: totalCount});
                 })
                 .catch((err) => {

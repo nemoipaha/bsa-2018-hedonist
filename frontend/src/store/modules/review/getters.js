@@ -54,5 +54,9 @@ export default {
   
     getPlaceReviewPhotos: (state) => {
         return state.placeReviewPhotos;
+    },
+
+    getReviewPhotos: state => reviewId => {
+        return state.reviewPhotos.filter(item => item.review_id === reviewId);
     }
 };
