@@ -44,6 +44,8 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::group(['middleware' => 'custom.jwt.auth'], function () {
+        Route::delete('/users/{id}', 'Api\Auth\AuthController@deleteUser');
+
         Route::group(['namespace' => 'Api\User'], function () {
             Route::get('/notifications', 'UserNotificationsController@getNotifications');
             Route::get('/notifications/unread', 'UserNotificationsController@getUnreadNotifications');
@@ -57,7 +59,6 @@ Route::prefix('v1')->group(function () {
         Route::resource('user-lists', 'Api\User\UserList\UserListController')->except([
             'create', 'edit'
         ]);
-
 
         Route::namespace('Api\\Place')->group(function () {
             Route::get('places', 'PlaceController@getCollection')->name('getPlaceCollection');
