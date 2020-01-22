@@ -20,7 +20,7 @@
         "dotenv": "^6.0.0",
         "laravel-echo": "^1.4.0",
         "lodash": "^4.17.13",
-        "mapbox-gl": "^0.47.0",
+        "mapbox-gl": "^0.48.0",
         "mapbox-gl-vue": "^1.9.0",
         "moment": "^2.22.2",
         "pusher-js": "^4.3.0",
